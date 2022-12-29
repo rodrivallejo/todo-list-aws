@@ -6,7 +6,7 @@ import json
 import functools
 from botocore.exceptions import ClientError
 
-
+# Devuelve la tabla del todolist que tenemos guardado en DynamoDb.
 def get_table(dynamodb=None):
     if not dynamodb:
         URL = os.environ['ENDPOINT_OVERRIDE']
@@ -20,7 +20,7 @@ def get_table(dynamodb=None):
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
     return table
 
-
+#Devuelve un item de la tabla de DynamoDB
 def get_item(key, dynamodb=None):
     table = get_table(dynamodb)
     try:
@@ -37,14 +37,14 @@ def get_item(key, dynamodb=None):
         if 'Item' in result:
             return result['Item']
 
-
+#Devuelve items de la talba de DynamoDb pasada por parametro
 def get_items(dynamodb=None):
     table = get_table(dynamodb)
     # fetch todo from the database
     result = table.scan()
     return result['Items']
 
-
+#Inserta un item en la tabla de DynamoDB
 def put_item(text, dynamodb=None):
     table = get_table(dynamodb)
     timestamp = str(time.time())
@@ -70,7 +70,7 @@ def put_item(text, dynamodb=None):
     else:
         return response
 
-
+#actualiza un item de la tabla de Dynamodb, con los parametros pasados.
 def update_item(key, text, checked, dynamodb=None):
     table = get_table(dynamodb)
     timestamp = int(time.time() * 1000)
@@ -99,7 +99,7 @@ def update_item(key, text, checked, dynamodb=None):
     else:
         return result['Attributes']
 
-
+#Borra un item de la tabla de DynamoDb
 def delete_item(key, dynamodb=None):
     table = get_table(dynamodb)
     # delete the todo from the database
@@ -115,7 +115,7 @@ def delete_item(key, dynamodb=None):
     else:
         return
 
-
+#Crea una nueva tabla para meter despues los items y crear la todolist.
 def create_todo_table(dynamodb):
     # For unit testing
     tableName = os.environ['DYNAMODB_TABLE']
