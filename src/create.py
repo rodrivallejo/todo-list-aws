@@ -7,6 +7,7 @@ import todoList
 # devolviendo el estado y el item
 
 def create(event, context):
+    
     data = json.loads(event['body'])
     if 'text' not in data:
         logging.error("Validation failed")
