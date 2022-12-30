@@ -50,8 +50,6 @@ def get_items(dynamodb=None):
     return result['Items']
 
 # Inserta un item en la tabla de DynamoDB
-
-
 def put_item(text, dynamodb=None):
     table = get_table(dynamodb)
     timestamp = str(time.time())
