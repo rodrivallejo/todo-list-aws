@@ -49,6 +49,7 @@ def get_items(dynamodb=None):
     result = table.scan()
     return result['Items']
 
+
 # Inserta un item en la tabla de DynamoDB
 def put_item(text, dynamodb=None):
     table = get_table(dynamodb)
