@@ -4,6 +4,8 @@ import decimalencoder
 import todoList
 
 # Actualiza un evento de la todolist parado por parametro.
+
+
 def update(event, context):
     data = json.loads(event['body'])
     if 'text' not in data or 'checked' not in data:

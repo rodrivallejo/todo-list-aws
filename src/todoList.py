@@ -79,6 +79,7 @@ def put_item(text, dynamodb=None):
 
 # Actualiza un item de la tabla de Dynamodb, con los parametros pasados.
 
+
 def update_item(key, text, checked, dynamodb=None):
     table = get_table(dynamodb)
     timestamp = int(time.time() * 1000)

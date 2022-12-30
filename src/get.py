@@ -2,7 +2,7 @@ import json
 import decimalencoder
 import todoList
 
-# devuelve un elemento de la todo list, 
+# devuelve un elemento de la todo list,
 # dependiendo del evento pasado por parametro.
 
 

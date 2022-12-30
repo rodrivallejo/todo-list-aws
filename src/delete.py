@@ -10,4 +10,3 @@ def delete(event, context):
     return {
         "statusCode": 200
     }
-    
