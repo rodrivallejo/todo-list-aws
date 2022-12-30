@@ -194,7 +194,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.table.get_item.side_effect = self.dbException
         self.assertRaises(Exception, get_item("", self.dynamodb))
 
-        print ('End: test_get_todo_exception'
+        print ('End: test_get_todo_exception')
 
     def test_delete_todo(self):
         print ('---------------------')
