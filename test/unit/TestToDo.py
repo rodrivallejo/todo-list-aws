@@ -1,14 +1,12 @@
-# from pprint import pprint
 import warnings
 import unittest
 import boto3
-from moto import mock_dynamodb2
+from moto import mock_dynamodb
 import sys
 import os
 import json
-import functools
 
-@mock_dynamodb2
+@mock_dynamodb
 class TestDatabaseFunctions(unittest.TestCase):
     def setUp(self):
         print ('---------------------')
@@ -31,6 +29,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.uuid = "123e4567-e89b-12d3-a456-426614174000"
         self.text = "Aprender DevOps y Cloud en la UNIR"
 
+        from src.todoList import create_todo_table
         self.table = create_todo_table(self.dynamodb)
         #self.table_local = create_todo_table()
         print ('End: setUp')
@@ -43,8 +42,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Table deleted succesfully')
         #self.table_local.delete()
         self.dynamodb = None
-        boto3.client = functools.partial(boto3.client, endpoint_url=None)
-        boto3.resource = functools.partial(boto3.resource, endpoint_url=None)
         print ('End: tearDown')
 
     def test_table_exists(self):
@@ -59,7 +56,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertIn(tableName, self.table.name)
         #self.assertIn('todoTable', self.table_local.name)
         print ('End: test_table_exists')
-
+        
     def test_get_table(self):
         print ('---------------------')
         print ('Start: test_get_table')
@@ -212,87 +209,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         # Testing file functions
         self.assertRaises(TypeError, delete_item("", self.dynamodb))
         print ('End: test_delete_todo_error')
-
-    def test_translate_todo(self):
-        print ('---------------------')
-        print ('Start: test_translate_todo')
-        self.table = create_todo_table_language(self.dynamodb)
-        from src.todoList import translate_item
-        # Testing file functions
-        # Table mock
-        translation = translate_item(self.text, "en", self.dynamodb)
-        print ('Response translate en:' + str(translation))
-        self.assertEqual("Learn DevOps and Cloud at UNIR", translation)
-        translation = translate_item(self.text, "fr", self.dynamodb)
-        print ('Response translate fr:' + str(translation))
-        self.assertEqual("Apprenez DevOps et Cloud à l'UNIR", translation)
-        "Apprenez DevOps et Cloud à l'UNIR"
-        print ('End: test_delete_todo')
-
-
-def create_todo_table(dynamodb):
-    # For unit testing
-    tableName = os.environ['DYNAMODB_TABLE']
-    print('Creating Table with name:' + tableName)
-    table = dynamodb.create_table(
-        TableName=tableName,
-        KeySchema=[
-            {
-                'AttributeName': 'id',
-                'KeyType': 'HASH'
-            }
-        ],
-        AttributeDefinitions=[
-            {
-                'AttributeName': 'id',
-                'AttributeType': 'S'
-            }
-        ],
-        ProvisionedThroughput={
-            'ReadCapacityUnits': 1,
-            'WriteCapacityUnits': 1
-        }
-    )
-
-    # Wait until the table exists.
-    table.meta.client.get_waiter('table_exists').wait(TableName=tableName)
-    if (table.table_status != 'ACTIVE'):
-        raise AssertionError()
-
-    return table
-
-
-def create_todo_table_language(dynamodb):
-    # For unit testing
-    tableName = os.environ['DYNAMODB_TABLE'] + "_language"
-    print('Creating Table with name:' + tableName)
-    table = dynamodb.create_table(
-        TableName=tableName,
-        KeySchema=[
-            {
-                'AttributeName': 'id',
-                'KeyType': 'HASH'
-            }
-        ],
-        AttributeDefinitions=[
-            {
-                'AttributeName': 'id',
-                'AttributeType': 'S'
-            }
-        ],
-        ProvisionedThroughput={
-            'ReadCapacityUnits': 1,
-            'WriteCapacityUnits': 1
-        }
-    )
-
-    # Wait until the table exists.
-    table.meta.client.get_waiter('table_exists').wait(TableName=tableName)
-    if (table.table_status != 'ACTIVE'):
-        raise AssertionError()
-
-    return table
-
 
 if __name__ == '__main__':
     unittest.main()
