@@ -5,6 +5,7 @@ from moto import mock_dynamodb
 import sys
 import os
 import json
+import functools
 
 @mock_dynamodb
 class TestDatabaseFunctions(unittest.TestCase):
@@ -42,6 +43,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Table deleted succesfully')
         #self.table_local.delete()
         self.dynamodb = None
+        boto3.client = functools.partial(boto3.client, endpoint_url=None)
+        boto3.resource = functools.partial(boto3.resource, endpoint_url=None)
         print ('End: tearDown')
 
     def test_table_exists(self):
@@ -66,37 +69,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         # check if the table name is 'ToDo'
         self.assertEqual(tableName, table.name)
         print ('End: test_get_table')
-        
-    def test_create_todo_table(dynamodb):
-    # For unit testing
-    tableName = os.environ['DYNAMODB_TABLE']
-    print('Creating Table with name:' + tableName)
-    table = dynamodb.create_table(
-        TableName=tableName,
-        KeySchema=[
-            {
-                'AttributeName': 'id',
-                'KeyType': 'HASH'
-            }
-        ],
-        AttributeDefinitions=[
-            {
-                'AttributeName': 'id',
-                'AttributeType': 'S'
-            }
-        ],
-        ProvisionedThroughput={
-            'ReadCapacityUnits': 1,
-            'WriteCapacityUnits': 1
-        }
-    )
-
-    # Wait until the table exists.
-    table.meta.client.get_waiter('table_exists').wait(TableName=tableName)
-    if (table.table_status != 'ACTIVE'):
-        raise AssertionError()
-
-    return table
+    
 
     def test_put_todo(self):
         print ('---------------------')
