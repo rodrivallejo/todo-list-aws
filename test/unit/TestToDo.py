@@ -5,7 +5,6 @@ from moto import mock_dynamodb
 import sys
 import os
 import json
-import functools
 
 @mock_dynamodb
 class TestDatabaseFunctions(unittest.TestCase):
@@ -184,6 +183,18 @@ class TestDatabaseFunctions(unittest.TestCase):
                 "",
                 self.dynamodb))
         print ('End: atest_update_todo_error')
+        
+    def test_get_todo_exception(self):
+        print ('---------------------')
+        print ('Start: test_get_todo_exception')
+        #from src.todoList import get_table
+        from src.todoList import get_item        
+        
+        add_client_exception_to_moto(self)         
+        self.table.get_item.side_effect = self.dbException
+        self.assertRaises(Exception, get_item("", self.dynamodb))
+
+        print ('End: test_get_todo_exception'
 
     def test_delete_todo(self):
         print ('---------------------')
