@@ -18,6 +18,7 @@ disable_rollback = true
 stack_name = "todo-list-aws-staging"
 s3_prefix = "todo-list-aws"
 region = "us-east-1"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-ksjl50lc0ea0"
 capabilities = "CAPABILITY_IAM"
 parameter_overrides = "Stage=\"staging\""
 image_repositories = []
