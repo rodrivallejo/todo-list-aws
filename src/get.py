@@ -2,7 +2,10 @@ import json
 import decimalencoder
 import todoList
 
-# devuelve un elemento de la todo list, dependiendo del evento pasado por parametro.
+# devuelve un elemento de la todo list, 
+# dependiendo del evento pasado por parametro.
+
+
 def get(event, context):
     # create a response
     item = todoList.get_item(event['pathParameters']['id'])
