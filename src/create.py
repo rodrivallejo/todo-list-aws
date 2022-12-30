@@ -2,6 +2,7 @@ import json
 import logging
 import todoList
 
+# Funcion que crea un evento en el todolist
 
 def create(event, context):
 
@@ -11,9 +12,7 @@ def create(event, context):
         raise Exception("Couldn't create the todo item.")
     item = todoList.put_item(data['text'])
     # create a response
-    response = {
+    return {
         "statusCode": 200,
         "body": json.dumps(item)
     }
-    return response
-    
