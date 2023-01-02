@@ -8,4 +8,6 @@ python -m pip install awscli
 python -m pip install aws-sam-cli
 # For integration testing
 python -m pip install pytest
+python -m pip install cryptography
+python -m pip install pyopenssl
 pwd
