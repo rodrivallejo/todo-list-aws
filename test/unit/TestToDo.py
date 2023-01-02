@@ -1,12 +1,29 @@
 import warnings
 import unittest
 import boto3
-from moto import mock_dynamodb
+from moto import mock_dynamodb2
 import sys
 import os
 import json
 
-@mock_dynamodb
+
+@mock_dynamodb2
+def add_client_exception_to_moto(self):
+    print ('Start: add_client_exception_to_moto')
+
+    from src.todoList import get_table
+    from unittest.mock import Mock
+    from botocore.exceptions import ClientError
+    
+    self.table = get_table(self.dynamodb)
+    self.table = Mock()    
+    
+    self.dbException = ClientError({'Error': {'Code': 'MockedException', 'Message': 'This is a Mock'}},
+        os.environ['DYNAMODB_TABLE'])
+    
+    print ('End: add_client_exception_to_moto')
+
+@mock_dynamodb2
 class TestDatabaseFunctions(unittest.TestCase):
     def setUp(self):
         print ('---------------------')
