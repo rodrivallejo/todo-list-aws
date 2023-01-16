@@ -18,7 +18,7 @@ def add_client_exception_to_moto(self):
     self.table = get_table(self.dynamodb)
     self.table = Mock()    
     
-    self.dbException = ClientError({'Error': {'Code': 'MockedException', 'Message': 'This is a Mock'}},
+    self.dbException = ClientError({'Error': {'Code': 'MockedException', 'Message': 'Prueba'}},
         os.environ['DYNAMODB_TABLE'])
     
     print ('End: add_client_exception_to_moto')
