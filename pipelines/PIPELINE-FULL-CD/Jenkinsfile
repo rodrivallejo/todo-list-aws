@@ -20,7 +20,7 @@ pipeline {
                     git push origin master""",
                     label: "Merging code to master"
                 sshagent(['github']) {
-                    sh -oStrictHostKeyChecking=no -i /home/ubuntu/id_rsa "git push origin master"
+                    sh "git push origin master"
                 }
             }
         }
