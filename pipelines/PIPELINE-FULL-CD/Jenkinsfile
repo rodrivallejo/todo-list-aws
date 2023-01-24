@@ -12,6 +12,7 @@ pipeline {
         stage('Merge'){
             steps{
                 sh script: """
+                    ssh  -T git@github.com
                     set -x
                     git branch -a
                     git checkout -b develop origin/develop
